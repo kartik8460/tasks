@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const authController = require('./../controller/auth.controller');
+const AuthController = require('./../../controller/C_Auth');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'ROUTE' });
 });
 
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/register', AuthController.register);
+router.post('/login', AuthController.login);
 
 module.exports = router;

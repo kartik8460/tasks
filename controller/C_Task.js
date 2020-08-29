@@ -1,4 +1,4 @@
-const Task = require('./../models/task.model');
+const Task = require('../models/task.model');
 const { response, request } = require('express');
 
 module.exports.createTask = (request, response, next) => {

@@ -3,10 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
-const authRouter = require('./routes/auth.route');
-const usersRouter = require('./routes/users.route');
-const tasksRouter = require('./routes/users.route');
+const v1Routes = require('./routes/v1/index');
 const mongoose = require('mongoose');
 const MONGOOSE_URL = require('./utils/varaibles.utils').MONGOOSE_URL;
 
@@ -27,9 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/auth', authRouter);
-app.use('/users', usersRouter);
-app.use('/tasks', tasksRouter);
+app.use('/v1', v1Routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

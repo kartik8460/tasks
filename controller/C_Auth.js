@@ -1,7 +1,7 @@
-const User = require('./../models/user.model');
+const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
-const passportAuthMiddleware = require('./../middlewares/passport.middleware');
-const jwtTokenIssuer = require('./../utils/jwt.utils').createJWTTokken;
+const passportAuthMiddleware = require('../middlewares/passport.middleware');
+const jwtTokenIssuer = require('../utils/jwt.utils').createJWTTokken;
 
 module.exports.register = async (request, response, next) => {
     try {
