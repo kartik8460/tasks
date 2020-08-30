@@ -3,13 +3,15 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const v1Routes = require('./routes/v1/index');
+const routes = require('./routes/index.routes');
 const mongoose = require('mongoose');
 const MONGOOSE_URL = require('./utils/varaibles.utils').MONGOOSE_URL;
 
 mongoose.connect(MONGOOSE_URL, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,useCreateIndex: true
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  urlencoded: true
 });
 
 const app = express();
@@ -24,7 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/v1', v1Routes);
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -11,17 +11,17 @@ const TaskSchema = new Schema({
 	assets: {
         type: Array
     },
-	Assigned_by: {
+	assigned_by: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-	Assignted_to: {
+	assigned_to: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-	Created_by: {
+	created_by: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true

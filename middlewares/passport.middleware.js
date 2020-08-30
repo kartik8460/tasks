@@ -13,11 +13,16 @@ passport.use(new JWTStrategy(JWTOptions, async (payload, cb) => {
         let user = await User.findOne({_id: payload.userId});
 
         if(!user) return cb(null, false);
+        
+        const userObj = {
+            userId: user._id,
+            name: user.name
+        }
 
-        return cb(null, user);
+        return cb(null, userObj);
     } catch (error) {
         cb(error, false);
     }
 }));
 
-module.exports = passport.authenticate('jwt',{session: false});
+module.exports = passport.authenticate('jwt', {session: false});

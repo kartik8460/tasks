@@ -3,4 +3,4 @@ module.exports.JWT_VALIDITY = '7d';
 module.exports.JWT_OPTIONS = {
     expiresIn: this.JWT_VALIDITY
 }
-module.exports.MONGOOSE_URL = 'mongodb://localhost:27017/task';
+module.exports.MONGOOSE_URL = 'mongodb+srv://kartik8460:<passowrd>@cluster0.5likk.mongodb.net/tasks-demo';
