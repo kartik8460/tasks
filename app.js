@@ -4,17 +4,11 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const routes = require('./routes/index.routes');
-const mongoose = require('mongoose');
-const MONGOOSE_URL = require('./utils/varaibles.utils').MONGOOSE_URL;
-
-mongoose.connect(MONGOOSE_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  urlencoded: true
-});
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger.json');
 const app = express();
+
+const mongooseConnection = require('./config/database')();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use("/static-files/asset/", express.static(path.join("./assets")));
 app.use('/', routes);
 
 // catch 404 and forward to error handler
@@ -44,9 +40,14 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-console.log(`***********************************************************
-******************** Server Running At ********************
-***********************************************************
-***************** http://localhost:3000/ ******************
-***********************************************************`);
+mongooseConnection.then(() => {
+  console.log(`  ***********************************************************
+  ***********************************************************
+  ******************** Server Running At ********************
+  ***********************************************************
+  ***********************************************************
+  ***************** http://localhost:3000/ ******************
+  ***********************************************************
+  ***********************************************************`);
+})
 module.exports = app;

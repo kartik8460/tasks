@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passportAuthMiddleware = require('../../middlewares/passport.middleware');
+const multerMiddleware = require('./../../middlewares/multer.middleware');
 const TaskController = require('../../controller/C_Task');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -10,6 +11,9 @@ router.get('/', function(req, res, next) {
 router.post('/create-task', passportAuthMiddleware, TaskController.createTask);
 router.put('/update-task/:id', passportAuthMiddleware, TaskController.updateTask);
 router.delete('/delete-task/:id', passportAuthMiddleware, TaskController.deleteTask);
+
+// Add Assets
+router.post('/add-assets/', passportAuthMiddleware, multerMiddleware.single('asset'), TaskController.addAssets);
 
 // Read Operations
 router.get('/get-task-by-id/:id', passportAuthMiddleware, TaskController.getTaskByID);

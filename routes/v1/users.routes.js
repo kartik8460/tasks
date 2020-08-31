@@ -5,6 +5,7 @@ const UserController = require('../../controller/C_User');
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
-router.get('/get-user-details', UserController.userDetails );
+router.get('/get-users', UserController.allUsers );
+router.get('/get-user-details/:id', UserController.userDetails );
 
 module.exports = router;

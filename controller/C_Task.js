@@ -1,5 +1,6 @@
 const Task = require('../models/task.model');
 const { response, request } = require('express');
+const { updateOne } = require('../models/task.model');
 
 module.exports.createTask = async (request, response, next) => {
     try {
@@ -12,10 +13,22 @@ module.exports.createTask = async (request, response, next) => {
             assigned_to: request.body.assigned_to,
             created_by: creatorId
         };
-    
+
         const addedTask = await Task.create(newTask);
         
         response.send({success: true, task: addedTask});
+    } catch (error) {
+        response.send({success: false, message: error.message});
+    }
+}
+
+// Add Assets
+module.exports.addAssets = async (request, response, next) => {
+    try {
+        const filePath = `${request.protocol}://${request.get("host")}/static-files/asset/${request.file.filename}`;
+        const taskId = request.body.taskId;
+        let updatedTask = await Task.findByIdAndUpdate(taskId, {$push:{assets: filePath}}, {new: true});
+        response.send({success: true, updatedTask: updatedTask});
     } catch (error) {
         response.send({success: false, message: error.message});
     }
