@@ -1,9 +1,10 @@
 const Task = require('../models/task.model');
 const { response, request } = require('express');
-const { updateOne } = require('../models/task.model');
 
 module.exports.createTask = async (request, response, next) => {
     try {
+        console.log(request.user);
+        console.log(!!request.user.userId);
         const creatorId = request.user.userId;
         const newTask ={
             title:request.body.title, 

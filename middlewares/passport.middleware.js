@@ -10,6 +10,7 @@ const JWTOptions = {
 }
 passport.use(new JWTStrategy(JWTOptions, async (payload, cb) => {
     try {
+        console.log(payload.userId);
         let user = await User.findOne({_id: payload.userId});
 
         if(!user) return cb(null, false);

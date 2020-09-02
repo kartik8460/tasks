@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const routes = require('./routes/index.routes');
 const swaggerUi = require('swagger-ui-express');
-const swaggerFile = require('./swagger.json');
+const swaggerUserFile = require('./swagger.user.json');
+const swaggerTaskFile = require('./swagger.task.json');
 const app = express();
 
 const mongooseConnection = require('./config/database')();
@@ -20,9 +21,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/swagger-api-user', swaggerUi.serve, swaggerUi.setup(swaggerUserFile));
+app.use('/swagger-api-task', swaggerUi.serve, swaggerUi.setup(swaggerTaskFile));
 app.use("/static-files/asset/", express.static(path.join("./assets")));
-app.use('/', routes);
+app.use('/api', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,358 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tasks",
+        "description": "Nodejs Training",
+        "version": "1"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "schemes": [
+        "http"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "For Authentication and Authorization"
+        },
+        {
+            "name": "Task",
+            "description": "Task Api Routes"
+        }
+    ],
+    "paths": {
+        "/api/v1/auth/login" : {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "Post Request Authentication",
+                "description": "Post Request : Returns JWT tokken for Authentication and Authorization",
+                "operationId":"authentication",
+                "responses":{
+                    "200":{
+                        "description": "Authentication"
+                    }
+                },
+                "produces": ["application/json"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":"#/components/schemas/Login"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task/create-task":{
+            "post": {
+                "tags": ["Task"],
+                "summary": "Post Request Task-Create",
+                "description": "Post Request : Creates a new Task and store it in database",
+                "operationId":"createTask",
+                "responses": {
+                    "200": {
+                        "description": "Successfull Operation"
+                    }
+                },
+				"security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "$ref":"#/components/schemas/Create-Task"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task/update-task/{id}": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Put Request : Update Task By Id",
+                "description": "Put Request : Update the task specific to the given Id",
+                "operationId":"upodateTaskById",
+                "responses":{
+                    "200":{
+                        "description": "Successfull Operation"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true
+                    }
+                ],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":"#/components/schemas/Task"
+                            }
+                        }
+                    }
+                },
+                "produces": ["application/json"]
+            }
+        },
+        "/api/v1/task/delete-task/{id}": {
+            "delete": {
+                "tags": ["Task"],
+                "summary": "Delete Request : Delete Task",
+                "description": "Get Request : Delete a Task specific to the given Id",
+                "operationId":"deleteTaskById",
+                "responses":{
+                    "200":{
+                        "description": "Successfull Operation"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true
+                    }
+                ],
+                "security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "produces": ["application/json"]
+            }
+        },
+        "/api/v1/task/add-assets": {
+            "post": {
+                "tags": ["Task"],
+                "summary": "Post Request : Add Asset to spicific",
+                "description": "Get Request : Add Asset to the asset array of task of specific Id",
+                "operationId":"getTaskById",
+                "responses": {
+                    "200": {
+                        "description": "Successfull Operation"
+                    }
+                },
+                "security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "produces": ["application/json"]
+            }
+        },
+        "/api/v1/task/get-task-by-id/{id}": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Get Request : Get Task By Task ID",
+                "description": "Get Request : Returns the Task specific to the given Id",
+                "operationId":"getTaskById",
+                "responses":{
+                    "200":{
+                        "description": "Successfull Operation"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true
+                    }
+                ],
+                "security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "produces": ["application/json"]
+            }
+        },
+        "/api/v1/task/get-task-by-assignedTo-id/{id}": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Get Request : Get Task By Assigned To ID",
+                "description": "Get Request : Returns all the Task Assigned to a User of a specific ID",
+                "operationId":"getTaskAssignedToId",
+                "responses":{
+                    "200":{
+                        "description": "Successfull Operation"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true
+                    }
+                ],
+                "security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "produces": ["application/json"]
+            }
+        },
+        "/api/v1/task/get-task-by-assignedBy-id/{id}": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Get Request : Get Task By Assigned By ID",
+                "description": "Get Request : Get all the Task Assigned By a User of a specific ID",
+                "operationId":"getTaskAssignedById",
+                "responses":{
+                    "200":{
+                        "description": "Get Request : Returns all the Task Assigned By a User of specific ID"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true
+                    }
+                ],
+                "security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "produces": ["application/json"]
+            }
+        },
+        "/api/v1/task/get-task-by-createdBy-id/{id}": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Get Request : Get Task By Created By ID",
+                "description": "Get Request : Get all the Task Created By a User of a specific ID",
+                "operationId": "getTaskAssignedById",
+                "responses": {
+                    "200": {
+                        "description": "Successfull Operaion"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "security": [
+					{
+						"bearerAuth": []
+					}
+                ],
+                "produces": ["application/json"]
+            }
+        },
+        "/api/v1/task/get-task-by-title/{id}": {
+            "get": {
+                "tags": ["Task"],
+                "summary": "Get Request : Get Task By Title",
+                "description": "Get Request : Get Task by TItle",
+                "operationId": "getTaskAssignedById",
+                "responses": {
+                    "200": {
+                        "description": "Successfull Operaions"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required": true
+                    }
+                ],
+                "security": [
+					{
+						"bearerAuth": []
+					}
+                ],  
+                "produces": ["application/json"]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Create-Task": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "assigned_to": {
+                        "type": "string"
+                    },
+                    "assigned_by": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Task": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "assigned_to": {
+                        "type": "string"
+                    },
+                    "assigned_by": {
+                        "type": "string"
+                    },
+                    "created_by": {
+                        "type": "string"
+                    },
+                    "_id": {
+                        "type": "string"
+                    },
+                    "created_At": {
+                        "type":"string",
+                        "format":"date-time"
+                    },
+                    "updatedAt": {
+                        "type":"string",
+                        "format":"date-time"
+                    }
+                }
+            }
+        }
+    }
+}

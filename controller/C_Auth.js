@@ -31,7 +31,7 @@ module.exports.register = async (request, response, next) => {
 
 module.exports.login = async (request, response, next) => {
     try {
-        console.log(request.body.email, request.body.password); 
+        console.log(request.body.email, request.body.password);
         const email = request.body.email;
         const password = request.body.password;
 

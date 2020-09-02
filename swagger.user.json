@@ -1,0 +1,39 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User",
+        "description": "Nodejs Training",
+        "version": "1"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "schemes": [
+        "http"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "User",
+            "description": "User Api Routes"
+        }
+    ],
+    "paths": {
+        "/api/v1/user/get-users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Request : Return Users List",
+                "description": "Get Request : Return Users List",
+                "operationId": "getUsers",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        }
+    }
+}
