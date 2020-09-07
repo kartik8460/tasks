@@ -10,6 +10,6 @@ router.get('/', function(req, res, next) {
 router.post('/register', AuthController.register);
 router.post('/login', AuthController.login);
 router.post('/reset-password-request', AuthController.resetPasswordRequest, nodemialer);
-router.post('/reset-password/:token', AuthController.resetPasswordRequest, nodemialer);
+router.post('/reset-password/:token', AuthController.resetPassword, nodemialer);
 
 module.exports = router;
