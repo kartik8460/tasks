@@ -12,12 +12,10 @@ const passwordHash = async (password) => {
 
 module.exports.register = async (request, response, next) => {
     try {
-        if(!request.body.name || !request.body.email || !request.body.password) {
-            throw new Error('Provide all Credentials');
-        }
         const name = request.body.name;
         const email = request.body.email;
         const password = request.body.password;
+        
         const hash = await passwordHash(password);
 
         const newUser = {
@@ -26,10 +24,9 @@ module.exports.register = async (request, response, next) => {
             email: email
         }
         const user = await User.create(newUser);
-        response.send({success: true, message:'Successfully Registered', id: user._id, email: user.email});
+        response.status(201).send({success: true, message:'Successfully Registered', id: user._id, email: user.email});
 
     } catch (error) {
-        console.log(error);
         response.send({success: false, message: error.message});
     }
     
@@ -49,19 +46,19 @@ module.exports.login = async (request, response, next) => {
         
         let tokenObj = await jwtTokenIssuer(user);
         if(!tokenObj) throw new Error('Unable to create Tokken');
-
-        response.send(tokenObj);
+        tokenObj.success = true;
+        response.status(200).send(tokenObj);
     } catch (error) {
-        response.send(400,{success: false, message: error.message});
+        response.status(400).send({success: false, message: error.message});
     }
 }
 
 module.exports.resetPasswordRequest = async (request, response, next) => {
     try {
-        if(!request.body.email) {
+        const email = request.body.email;
+        if(!email) {
             throw new Error('Please provide email address associated to your');
         }
-        const email = request.body.email;
         
         const user = await User.findOne({email: email});
         if(!user) {
@@ -83,12 +80,6 @@ module.exports.resetPasswordRequest = async (request, response, next) => {
 
 module.exports.resetPassword = async (request, response, next) => {
     try {
-        if(!request.body.password || !request.body.confirmPassword) {
-            throw new Error('Please Provide all Credentials');
-        }
-        if(request.body.password !== request.body.confirmPassword) {
-            throw new Error('Your Password and Confirm Password Does not Match!')
-        }
 
         const tokenQuery = await ResetPassword.findOne({token: request.params.token});
 

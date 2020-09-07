@@ -3,8 +3,6 @@ const { response, request } = require('express');
 
 module.exports.createTask = async (request, response, next) => {
     try {
-        console.log(request.user);
-        console.log(!!request.user.userId);
         const creatorId = request.user.userId;
         const newTask ={
             title:request.body.title, 
