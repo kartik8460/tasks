@@ -52,7 +52,7 @@ module.exports.login = async (request, response, next) => {
 
         response.send(tokenObj);
     } catch (error) {
-        response.send({success: false, message: error.message});
+        response.send(400,{success: false, message: error.message});
     }
 }
 
