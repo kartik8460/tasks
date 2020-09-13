@@ -10,7 +10,7 @@ const passwordHash = async (password) => {
     return await bcrypt.hash(password, saltRounds);
 }
 
-module.exports.register = async (request, response, next) => {
+exports.register = async (request, response, next) => {
     try {
         const name = request.body.name;
         const email = request.body.email;
@@ -32,7 +32,7 @@ module.exports.register = async (request, response, next) => {
     
 }
 
-module.exports.login = async (request, response, next) => {
+exports.login = async (request, response, next) => {
     try {
         const email = request.body.email;
         const password = request.body.password;
@@ -53,7 +53,7 @@ module.exports.login = async (request, response, next) => {
     }
 }
 
-module.exports.resetPasswordRequest = async (request, response, next) => {
+exports.resetPasswordRequest = async (request, response, next) => {
     try {
         const email = request.body.email;
         if(!email) {
@@ -69,7 +69,8 @@ module.exports.resetPasswordRequest = async (request, response, next) => {
         await ResetPassword.create({token: token, userId: user._id});
         request.resetPasswordData ={
             url: `http://localhost:3000/api/v1/auth/reset-password/${token}`,
-            email: user.email
+            email: user.email,
+            userName: user.name
         } 
         next();
     } catch (error) {
@@ -78,7 +79,7 @@ module.exports.resetPasswordRequest = async (request, response, next) => {
     
 };
 
-module.exports.resetPassword = async (request, response, next) => {
+exports.resetPassword = async (request, response, next) => {
     try {
 
         const tokenQuery = await ResetPassword.findOne({token: request.params.token});

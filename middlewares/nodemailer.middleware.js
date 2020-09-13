@@ -1,10 +1,11 @@
 const nodemailer = require('nodemailer');
-const { request } = require('express');
-
+const loadash = require('lodash').template;
+const EmailTemplates = require('./../models/emailTemplates.model');
 module.exports = async (request, response, next) => {
     try {
-        let testAccount = await nodemailer.createTestAccount();
-        console.log(request.resetPasswordData, '\nURL IS ABOVE');
+        const template = await EmailTemplates.findOne({type:'reset-password'}, {_id:0, template:1});
+        const compiledTemplate = loadash(template.template)({url: request.resetPasswordData.url, userName: request.resetPasswordData.userName});
+        console.log(compiledTemplate);
         let transport = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -18,27 +19,13 @@ module.exports = async (request, response, next) => {
             to: request.resetPasswordData.email,
             subject: "Hello",
             text: "Link to Reset Your Password",
-            html: `<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Document</title>
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            </head>
-            <body>
-                <div class="card">
-                    <h5 class="card-header">Tasks</h5>
-                    <div class="card-body">
-                      <h5 class="card-title">Reset Password</h5>
-                      <p class="card-text">Click on the button below to reset your password</p>
-                      <a href="${request.resetPasswordData.url}" class="btn btn-primary">Click Here to reset Password</a>
-                    </div>
-                  </div>
-            </body>
-            </html>`
+            html: compiledTemplate
         });
-        response.send({success: true, message: 'We have successfully send the reset password url to your email associated with your account'})
+        response.send({
+            success: true,
+            message: 'We have successfully send the reset password url to your email associated with your account',
+            template: compiledTemplate
+        })
         
     } catch (error) {
         response.send({success: false, error: error.message})

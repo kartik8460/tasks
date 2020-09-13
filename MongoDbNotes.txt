@@ -1,0 +1,5 @@
+$size does not support comparision or logical operator (only a numeric value)
+$not also returns the document in which the field does not exists
+In projection if you want to exclude nested document fields then you cannot exlude main documents fields
+In projection _id is default set to 1 we have to explicitly set it to 0 if we want to exclude it from the result
+If we search for null value for a particular field of the documents it will also return those documents in which that field doest not exist
