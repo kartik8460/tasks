@@ -1,5 +1,4 @@
 const Task = require("../models/task.model");
-const { response, request } = require("express");
 
 module.exports.createTask = async (request, response, next) => {
     try {
@@ -45,10 +44,10 @@ module.exports.updateTask = async (request, response, next) => {
         const task = await Task.findOne({ _id: taskId });
         if (!task.created_by === request.user.userId)
             throw new Error("Not Authorized to Edit Task");
+
         const updateTask = {
             title: request.body.title,
             description: request.body.description,
-            assets: request.body.assets,
             assigned_by: request.body.assigned_by,
             assigned_to: request.body.assigned_to,
         };
@@ -64,8 +63,9 @@ module.exports.updateTask = async (request, response, next) => {
 module.exports.getAllTasks = async (request, response, next) => {
     try {
         let tasks = await Task.find({}, { title: 1 });
-        response.send({ success: true, tasks });
+        response.status(200).send({ success: true, tasks });
     } catch (error) {
+        console.log(error);
         response.status(400).send({ success: false, message: error.message });
     }
 };
@@ -78,7 +78,7 @@ module.exports.getTaskByID = async (request, response, next) => {
         const taskId = request.params.id;
         const task = await Task.findById(taskId);
         if (!task) throw new Error("Task Not Found");
-        response.send({ success: true, task: task });
+        response.status(200).send(task);
     } catch (error) {
         response.status(400).send({ success: false, message: error.message });
     }
